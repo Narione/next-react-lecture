@@ -16,6 +16,7 @@ export default function ApiSend() {
     // const result = await res.json();
     // console.log(result);
 
+    /* version2. client- axios */
     // const res2 = await axios.get(url); //axios 의 장점 알아서 parse, .data에 담아줌
     // const result2 = res2.data; //응답데이터가 담긴 위치
 
@@ -30,8 +31,6 @@ export default function ApiSend() {
 
     const res5 = await axios.post("/api/weather", { text: 123 });
   };
-
-  /* version2. client- axios */
 
   useEffect(() => {
     getData();
