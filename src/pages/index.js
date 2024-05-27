@@ -43,6 +43,9 @@ export default function Home() {
         <li onClick={() => router.push("/mission/apiSend")}>
           <span>API 통신 미션</span>
         </li>
+        <li>
+          <Link href="/lecture/dbConnection">DB dbConnection 페이지</Link>
+        </li>
       </ul>
     </>
   );

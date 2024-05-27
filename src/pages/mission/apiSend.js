@@ -11,17 +11,16 @@ const ApiSend = () => {
     const res = await axios.get(
       `/api/restaurant?pageNo=${pageNo}&numOfRows=${numOfRows}`
     );
-    setResult(res.data.items);
-    setTotalCount(Number(res.data.totalCount));
+    if (res.data) {
+      /* 사용자에게 error화면을 노출시키면 안됨! 에러처리! */
+      setResult(res.data.items || []);
+      setTotalCount(Number(res.data.totalCount || 0));
+    }
   };
 
   useEffect(() => {
     getData();
   }, [pageNo]);
-
-  useEffect(() => {
-    // console.log(result);
-  }, [result]);
 
   /* 페이지 이동 */
   const pageUp = () => {
@@ -41,6 +40,7 @@ const ApiSend = () => {
       setPageNo(pageNo - 1);
     }
   };
+
   return (
     <>
       <section>
@@ -59,58 +59,59 @@ const ApiSend = () => {
 
               <div className="p-6">
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
-                  {result.map((v, i) => {
-                    return (
-                      <div
-                        className="overflow-hidden rounded-2xl bg-gray-50"
-                        key={i}
-                      >
-                        <div className="flex items-center h-[180px] overflow-hidden">
-                          <img
-                            src={`https://source.unsplash.com/random/400x300/?food&${Math.random()}`}
-                            alt="Hamburger"
-                          />
-                        </div>
+                  {result &&
+                    result.map((v, i) => {
+                      return (
+                        <div
+                          className="overflow-hidden rounded-2xl bg-gray-50"
+                          key={i}
+                        >
+                          <div className="flex items-center h-[180px] overflow-hidden">
+                            <img
+                              src={`https://source.unsplash.com/random/400x300/?food&${Math.random()}`}
+                              alt="Hamburger"
+                            />
+                          </div>
 
-                        <div className="p-6">
-                          <div className="flex flex-col items-start justify-between sm:flex-row sm:items-center">
-                            <div>
-                              <p className="text-gray-400">{v.restrntSumm}</p>
-                              <h2 className="mt-2 text-lg font-semibold text-gray-800">
-                                {v.restrntNm}
-                              </h2>
-                              <p className="text-gray-400">{v.restrntAddr}</p>
+                          <div className="p-6">
+                            <div className="flex flex-col items-start justify-between sm:flex-row sm:items-center">
+                              <div>
+                                <p className="text-gray-400">{v.restrntSumm}</p>
+                                <h2 className="mt-2 text-lg font-semibold text-gray-800">
+                                  {v.restrntNm}
+                                </h2>
+                                <p className="text-gray-400">{v.restrntAddr}</p>
+                              </div>
+                            </div>
+
+                            <hr className="mt-4 mb-4" />
+
+                            <div className="flex flex-wrap justify-between">
+                              <p className="inline-flex items-center">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-5 w-5 stroke-orange-400"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                  />
+                                </svg>
+
+                                <span className="ml-2 text-gray-600">
+                                  {v.salsTime}
+                                </span>
+                              </p>
                             </div>
                           </div>
-
-                          <hr className="mt-4 mb-4" />
-
-                          <div className="flex flex-wrap justify-between">
-                            <p className="inline-flex items-center">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 stroke-orange-400"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                              </svg>
-
-                              <span className="ml-2 text-gray-600">
-                                {v.salsTime}
-                              </span>
-                            </p>
-                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
                 </div>
               </div>
               {/* 리스트 div 끝 */}
